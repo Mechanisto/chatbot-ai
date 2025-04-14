@@ -16,13 +16,8 @@ def generate_response(user_input):
     sequence = tokenizer.texts_to_sequences([user_input])
     padded = pad_sequences(sequence, maxlen=20, padding="post")
 
-    prediction = model.predict(padded)[0]  # Ambil prediksi untuk 1 input
+    prediction = model.predict(padded)[0]  # (vocab_size,)
+    predicted_token_id = np.argmax(prediction)
 
-    # Ambil token ID dari hasil prediksi
-    predicted_token_ids = prediction.argmax(axis=-1)
-
-    # Decode semua token ke kata
-    reverse_word_index = {v: k for k, v in tokenizer.word_index.items()}
-    response_words = [reverse_word_index.get(i, "") for i in predicted_token_ids if i != 0]
-
-    return " ".join(response_words).strip()
+    word = reverse_word_index.get(predicted_token_id, "")
+    return word.strip() if word else "I don't understand"
