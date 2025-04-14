@@ -14,7 +14,15 @@ reverse_word_index = {v: k for k, v in tokenizer.word_index.items()}
 
 def generate_response(user_input):
     sequence = tokenizer.texts_to_sequences([user_input])
-    padded = pad_sequences(sequence, maxlen=max_length, padding="post")
-    prediction = model.predict(padded)
-    response_index = prediction.argmax()
-    return reverse_word_index.get(response_index, "I don't understand")
+    padded = pad_sequences(sequence, maxlen=20, padding="post")
+
+    prediction = model.predict(padded)[0]  # Ambil prediksi untuk 1 input
+
+    # Ambil token ID dari hasil prediksi
+    predicted_token_ids = prediction.argmax(axis=-1)
+
+    # Decode semua token ke kata
+    reverse_word_index = {v: k for k, v in tokenizer.word_index.items()}
+    response_words = [reverse_word_index.get(i, "") for i in predicted_token_ids if i != 0]
+
+    return " ".join(response_words).strip()

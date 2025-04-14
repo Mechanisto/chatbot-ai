@@ -27,6 +27,8 @@
       padding: 1rem;
       border-radius: 5px;
       min-height: 50px;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
   </style>
 </head>
@@ -42,19 +44,34 @@
 
 <script>
   async function sendMessage() {
-    const message = document.getElementById('message').value;
+    const messageInput = document.getElementById('message');
     const responseBox = document.getElementById('response');
+    const message = messageInput.value;
 
-    const response = await fetch('https://mechatbot-ai.up.railway.app/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ message })
-    });
+    // Clear input
+    messageInput.value = "";
 
-    const data = await response.json();
-    responseBox.innerText = "Bot: " + data.response;
+    try {
+      const response = await fetch('https://mechatbot-ai.up.railway.app/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await response.json();
+
+      if (data.response) {
+        responseBox.innerText = "Bot: " + data.response;
+      } else {
+        responseBox.innerText = "Bot: (no response)";
+      }
+
+    } catch (error) {
+      responseBox.innerText = "Bot: Error talking to server.";
+      console.error(error);
+    }
   }
 </script>
 
