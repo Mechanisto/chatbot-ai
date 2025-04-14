@@ -4,6 +4,10 @@ import os
 
 app = Flask(__name__)
 
+@app.route("/", methods=["GET"])
+def home():
+    return "Chatbot API is running! Use POST /chat to talk to me."
+
 @app.route("/chat", methods=["POST"])
 def chat():
     user_input = request.json.get("message")
