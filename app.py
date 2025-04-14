@@ -8,11 +8,15 @@ app = Flask(__name__)
 def home():
     return "Chatbot API is running! Use POST /chat to talk to me."
 
-@app.route("/chat", methods=["POST"])
+@app.route("/chat", methods=["GET", "POST"])
 def chat():
+    if request.method == "GET":
+        return "POST a JSON message to this endpoint."
+    
     user_input = request.json.get("message")
     response = generate_response(user_input)
     return jsonify({"response": response})
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))  # default ke 5000 jika PORT tidak tersedia

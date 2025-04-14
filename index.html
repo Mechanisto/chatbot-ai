@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot AI</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f4f4f4;
+    }
+    .chatbox {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    #response {
+      margin-top: 1rem;
+      background: #e6f3ff;
+      padding: 1rem;
+      border-radius: 5px;
+      min-height: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chatbox">
+  <h2>🤖 Chatbot AI</h2>
+  <input type="text" id="message" placeholder="Type your message..." style="width: 70%;">
+  <button onclick="sendMessage()">Send</button>
+
+  <div id="response"></div>
+</div>
+
+<script>
+  async function sendMessage() {
+    const message = document.getElementById('message').value;
+    const responseBox = document.getElementById('response');
+
+    const response = await fetch('https://web-production-22ba4.up.railway.app/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message })
+    });
+
+    const data = await response.json();
+    responseBox.innerText = "Bot: " + data.response;
+  }
+</script>
+
+</body>
+</html>
