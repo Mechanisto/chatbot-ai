@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify
 from response import generate_response
 import os
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 @app.route("/", methods=["GET"])
 def home():
     return "Chatbot API is running! Use POST /chat to talk to me."
