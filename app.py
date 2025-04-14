@@ -11,9 +11,18 @@ def home():
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
     if request.method == "GET":
-        return "POST a JSON message to this endpoint."
-    
-    user_input = request.json.get("message")
+        return "Chatbot API is working. Please send a POST request with JSON: {\"message\": \"your message\"}"
+
+    # Cek kalau JSON ada
+    if not request.is_json:
+        return jsonify({"error": "Invalid request format, JSON expected."}), 400
+
+    data = request.get_json()
+    user_input = data.get("message")
+
+    if not user_input:
+        return jsonify({"error": "No message provided."}), 400
+
     response = generate_response(user_input)
     return jsonify({"response": response})
 
