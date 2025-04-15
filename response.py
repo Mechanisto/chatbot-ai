@@ -27,4 +27,4 @@ def generate_response(user_input):
 
     word = reverse_word_index.get(predicted_token_id, "")
     return word.strip() if word else "I don't understand"
-    print(generate_response("hello"))   # atau kata dari kolom "sentence"
+print(generate_response("hello"))   # atau kata dari kolom "sentence"
